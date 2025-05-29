@@ -54,10 +54,9 @@ This guide aims to be step-by-step and accessible, even if you have limited expe
 ## 3. Requirements
 
 * **Android Device (Rooted):** Essential for Chrome cookie access as described.
-* **Termux App:** Installed, preferably from [F-Droid](https://f-droid.org/packages/com.termux/).
-    * *(Image Suggestion: Screenshot of Termux app icon or F-Droid page for Termux)*
+* **Termux App:** Installed, preferably from [F-Droid](https://f-droid.org/packages/com.termux/). <img src="https://github.com/user-attachments/assets/bbf397e4-2009-466c-a026-302bc7024826" alt="icon" width="25"/>
 * **Chrome Browser:** Installed, and you should be logged into any websites (e.g., Instagram) from which you intend to download restricted content.
-* **Root Management App (e.g., Magisk):** For granting Termux root permissions.
+* **Root Management App (e.g., Magisk, KSU, Apatch or Any Other Of Your Choice):** For granting Termux root permissions.
 * **Internet Connection.**
 * **Sufficient Device Storage.**
 
@@ -70,7 +69,8 @@ This guide aims to be step-by-step and accessible, even if you have limited expe
 
 2.  **Initial Termux Setup:**
     * Open Termux.
-        *(Image Suggestion: Screenshot of the initial Termux interface)*
+
+      *<img src="https://github.com/user-attachments/assets/856b0e57-d6b8-4eb8-8cee-6a2f315fea42" alt="Screenshot_20250529-160020 Termux" width="300"/>*
     * **Update Packages:** Keep your environment fresh. Type and run:
         ```bash
         pkg update && pkg upgrade
@@ -81,7 +81,8 @@ This guide aims to be step-by-step and accessible, even if you have limited expe
         termux-setup-storage
         ```
         * Tap "Allow" on the Android permission pop-up.
-        *(Image Suggestion: Screenshot of the Android permission pop-up for storage access)*
+
+          *<img src="https://github.com/user-attachments/assets/67f3a0eb-da4c-4982-b5f6-15d04912ae6d" width="300"/>*
 
 ### Part 2: Installing gallery-dl
 
@@ -101,18 +102,40 @@ This guide aims to be step-by-step and accessible, even if you have limited expe
 This script will enable the "Share to Termux" automation.
 
 1.  **Create the `bin` directory:** This is where Termux looks for user scripts.
+
     ```bash
     mkdir -p ~/bin
     ```
 
-2.  **Create the script file using `nano`** (a command-line text editor):
-    ```bash
-    nano ~/bin/termux-url-opener
-    ```
-    *(Image Suggestion: Screenshot of the empty nano editor interface)*
+2.  **Create the script file:**
+    The `termux-url-opener` script needs to be created in the `~/bin/` directory. Its full path will be: `/data/data/com.termux/files/home/bin/termux-url-opener`.
+
+      * **Method A: Using `nano` (command-line text editor in Termux)**
+        This is the primary method described for creating the script within Termux.
+
+        ```bash
+        nano ~/bin/termux-url-opener
+        ```
+
+          * This command opens (or creates if it doesn't exist) the `termux-url-opener` file in the `nano` editor directly within Termux.
+            *<img src="https://github.com/user-attachments/assets/1dcd181f-e4e6-49be-b494-34b7e59f86b2" alt="Nano Text Editor" width="300"/>*
+
+      * **Method B: Using a GUI Text Editor or File Manager App (Alternative for easier editing)**
+        If you find command-line text editing challenging, you can create or edit the `termux-url-opener` script using a graphical application.
+
+          * **Suitable Apps:**
+              * A simple text editor app installed on your Android device.
+              * A root-enabled file manager that includes a text editor, such as MT Manager or ZArchiver. These apps can navigate to Termux's internal storage if they have root access.
+          * **Steps for GUI method:**
+            1.  Using your chosen app, navigate to the script's directory path: `/data/data/com.termux/files/home/bin/`
+                *<img src="https://github.com/user-attachments/assets/5a66e27f-d047-4748-b440-864c71701cd1" alt="Path of Script" width="300"/>*
+            2.  Create a new file named `termux-url-opener` (ensure it has no hidden `.txt` extension if your editor tends to add one). Or, if you've already created it with `nano` but want to edit it graphically, simply open the existing file.
+            3.  Paste or type the script content (from the next step) into this file using the app's text editor.
+            4.  **Important for external editors:** Ensure the file is saved with Unix-style line endings (LF). Some text editors, especially if you were to create the file on a Windows PC and transfer it, might use Windows-style line endings (CRLF), which can cause scripts to fail on Linux-based systems like Termux. Most good mobile text editors or file manager editors should handle this correctly by default.
 
 3.  **Paste the script content:**
-    This is the specific script tailored for this guide. Copy and paste it exactly:
+    Whether you are using `nano` (as per Method A above) or an external GUI editor (Method B), this is the specific script tailored for this guide. Copy and paste it exactly into the `termux-url-opener` file:
+
     ```bash
     #!/data/data/com.termux/files/usr/bin/bash
     # Ensure the Termux binary directories are in PATH
@@ -128,35 +151,51 @@ This script will enable the "Share to Termux" automation.
     # Use root to run gallery-dl and specify the output directory
     exec su -c "$GALLERY_DL --directory \"$DOWNLOAD_DIR_GALLERY_DL\" --cookies-from-browser chrome:/data/data/com.android.chrome/app_chrome/Default \"$1\""
     ```
+    *<img src="https://github.com/user-attachments/assets/3a9dcc91-0f76-471d-8cfe-0a8a8d9dfc57" alt="Command Line" width="300"/>* *<img src="https://github.com/user-attachments/assets/a78c4ee0-0cd0-494a-b62d-1fd0341a0ffd" alt="GUI Based" width="300"/>*
 
 4.  **Understanding the script:**
-    * `#!/data/data/com.termux/files/usr/bin/bash`: The "shebang" line, tells Android to use Termux's `bash` to run the script.
-    * `export PATH=...`: Ensures the script can find commands like `su` and `gallery-dl`, as the environment when called via "Share" can be minimal.
-    * `GALLERY_DL=...`: Defines the full path to `gallery-dl` for reliability.
-    * `DOWNLOAD_DIR_GALLERY_DL=...`: Sets the download location to `~/storage/downloads/gallery-dl_downloads` (a folder named `gallery-dl_downloads` in your main Android Downloads folder).
-    * `exec su -c "$GALLERY_DL ..."`: The core command.
-        * `su -c`: Executes the following command string as **root (superuser)**, which is vital for accessing Chrome's protected cookie files.
-        * `--directory \"$DOWNLOAD_DIR_GALLERY_DL\"`: Instructs `gallery-dl` to save files to our defined download folder.
-        * `--cookies-from-browser chrome:/data/data/com.android.chrome/app_chrome/Default`: Tells `gallery-dl` to use cookies from Chrome's default profile path (requires root).
-        * `\"$1\"`: Passes the URL you shared (the first argument to the script) to `gallery-dl`.
 
-5.  **Saving the script in `nano`:**
-    1.  Press **Volume Down + O** (for Ctrl+O).
-        *(Image Suggestion: Screenshot of Termux with nano, highlighting Volume Down + O or on-screen extra keys)*
-    2.  Confirm the filename (`~/bin/termux-url-opener`) by pressing **Enter**.
-    3.  Press **Volume Down + X** (for Ctrl+X) to exit `nano`.
+      * `#!/data/data/com.termux/files/usr/bin/bash`: The "shebang" line, tells Android to use Termux's `bash` to run the script.
+      * `export PATH=...`: Ensures the script can find commands like `su` and `gallery-dl`, as the environment when called via "Share" can be minimal.
+      * `GALLERY_DL=...`: Defines the full path to `gallery-dl` for reliability.
+      * `DOWNLOAD_DIR_GALLERY_DL=...`: Sets the download location to `~/storage/downloads/gallery-dl_downloads` (a folder named `gallery-dl_downloads` in your main Android Downloads folder).
+      * `exec su -c "$GALLERY_DL ..."`: The core command.
+          * `su -c`: Executes the following command string as **root (superuser)**, which is vital for accessing Chrome's protected cookie files.
+          * `--directory \"$DOWNLOAD_DIR_GALLERY_DL\"`: Instructs `gallery-dl` to save files to our defined download folder.
+          * `--cookies-from-browser chrome:/data/data/com.android.chrome/app_chrome/Default`: Tells `gallery-dl` to use cookies from Chrome's default profile path (requires root).
+          * `\"$1\"`: Passes the URL you shared (the first argument to the script) to `gallery-dl`.
+
+5.  **Saving the script:**
+
+      * **If using `nano`:**
+        1.  Press **Volume Down + X** (this acts as Ctrl+X in Termux, which is the command to Exit).
+
+            *<img src="https://github.com/user-attachments/assets/1378c2dc-8d99-448d-ab10-5321515371d2" alt="Ctrl+X" width="300"/>*
+        2.  `nano` will now ask at the bottom of the screen: "Save modified buffer? (Y/N)" (This means: do you want to save your changes?). Type **`Y`** (for Yes).
+
+            *<img src="https://github.com/user-attachments/assets/5ac72236-84d1-4d7b-ae80-7ed1e7e9a368" alt="Ctrl+O" width="300"/>*
+        3.  Next, `nano` will show "File Name to Write: `~/bin/termux-url-opener`". The filename should already be correct as you opened it with this name. Press **Enter** to confirm and save the file.
+           
+        <!-- end list -->
+          * After pressing Enter, `nano` will close, and you'll be returned to the Termux command prompt. Your script is now saved with the changes.
+      * **If using a GUI Text Editor / File Manager App:**
+        1.  Use your app's specific "Save" function or option to save the changes you made to the `termux-url-opener` file.
+        2.  Double-check that the file is saved in the correct location: `/data/data/com.termux/files/home/bin/` and with the exact name `termux-url-opener` (no extra extensions like `.txt`).
 
 6.  **Making the script executable:**
     For the script to run, it needs execute permissions. Based on practical experience that indicates comprehensive permissions are sometimes needed for reliable operation when invoked via Android's share mechanism, the following methods are provided.
 
-    * **Method 1: Using `chmod` command in Termux (Recommended)**
+      * **Method 1: Using `chmod` command in Termux (Recommended)**
         This command sets full read, write, and execute permissions for owner, group, and others, plus special SUID, SGID, and Sticky bits.
+
         ```bash
         chmod 7777 ~/bin/termux-url-opener
         ```
-        * **Explanation:** `7777` sets special bits (SUID, SGID, Sticky) and `rwxrwxrwx` permissions. While highly permissive, this is suggested based on user experience for this specific script's invocation context. The `su -c` within the script is what primarily handles privilege escalation for `gallery-dl`.
 
-    * **Method 2: Setting Permissions via a Root-Enabled File Manager (e.g., MT Manager)**
+          * **Explanation:** `7777` sets special bits (SUID, SGID, Sticky) and `rwxrwxrwx` permissions. While highly permissive, this is suggested based on user experience for this specific script's invocation context. The `su -c` within the script is what primarily handles privilege escalation for `gallery-dl`.
+
+      * **Method 2: Setting Permissions via a Root-Enabled File Manager (e.g., MT Manager)**
+
         1.  Navigate to `/data/data/com.termux/files/home/bin/` in your root file manager.
             *(Image Suggestion: Screenshot of MT Manager at this path)*
         2.  Long-press `termux-url-opener`, select "Properties".
