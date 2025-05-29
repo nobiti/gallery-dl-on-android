@@ -197,14 +197,22 @@ This script will enable the "Share to Termux" automation.
       * **Method 2: Setting Permissions via a Root-Enabled File Manager (e.g., MT Manager)**
 
         1.  Navigate to `/data/data/com.termux/files/home/bin/` in your root file manager.
-            *(Image Suggestion: Screenshot of MT Manager at this path)*
-        2.  Long-press `termux-url-opener`, select "Properties".
-            *(Image Suggestion: Screenshot of MT Manager context menu)*
-        3.  Find "Permissions", tap "Modify".
-            *(Image Suggestion: Screenshot of MT Manager Properties dialog)*
-        4.  Check **ALL** boxes for "Read", "Write", "Exec" (for Owner, Group, Other) AND **ALL** "Special Permissions" boxes ("Set UID", "Set GID", "Sticky").
-            *(Image Suggestion: Screenshot of MT Manager permissions dialog with ALL boxes checked)*
-        5.  Apply/save changes.
+           
+              *<img src="https://github.com/user-attachments/assets/5a66e27f-d047-4748-b440-864c71701cd1" alt="Path of Script" width="300"/>*
+
+        3.  Long-press `termux-url-opener`, select "Properties".
+        
+              *<img src="https://github.com/user-attachments/assets/8262325c-674f-487e-b47f-b1a0d5437c5e" alt="Context Menu" width="300"/>*
+
+        4.  Find "Permissions", tap "Modify".
+
+              *<img src="https://github.com/user-attachments/assets/f48846ff-c6c6-4971-858b-bb83963f0a01" alt="Permission Menu" width="300"/>*
+
+        6.  Check **ALL** boxes for "Read", "Write", "Exec" (for Owner, Group, Other) AND **ALL** "Special Permissions" boxes ("Set UID", "Set GID", "Sticky").
+
+              *<img src="https://github.com/user-attachments/assets/76cc7072-04f1-41d3-a4ab-939c9f85c1cf" alt="Checkboxes" width="300"/>*
+
+        8.  Apply/save changes.
 
 ## 5. How to Use Your Automated Downloader
 
@@ -214,16 +222,22 @@ This script will enable the "Share to Termux" automation.
 
 2.  **Sharing a URL to Termux:**
     * In any app (Chrome, Instagram, etc.), find the content you want to download.
-    * Use the app's "Share" feature.
-        *(Image Suggestion: Screenshot of an app's share button)*
-    * From the Android share sheet, select "Termux".
-        *(Image Suggestion: Screenshot of the Android share sheet with "Termux" highlighted)*
+      
+        *<img src="https://github.com/user-attachments/assets/cdce33c7-779c-4412-a6c6-fd96116f6394" alt="Source View" width="300"/>*
 
-3.  **How it works:**
+    * Use the app's "Share" feature.
+  
+        *<img src="https://github.com/user-attachments/assets/1f3dfa01-a9e8-4d08-8213-4f27682943a4" alt="Share Link" width="300"/>*
+
+     * From the Android share sheet, select "Termux".
+       
+        *<img src="https://github.com/user-attachments/assets/51e8f72f-0384-42fc-b876-7ce9f25c7996" alt="Share Link" width="300"/>*
+
+4.  **How it works:**
     * Android sends the URL to your `~/bin/termux-url-opener` script.
     * The script runs `gallery-dl` as root, using Chrome cookies, and saves files to the folder specified in the script. Termux may show command-line activity.
 
-4.  **Finding your downloaded files:**
+5.  **Finding your downloaded files:**
     * Files are saved in the `gallery-dl_downloads` folder inside your main Android "Downloads" folder. (Within Termux, the path is `/data/data/com.termux/files/home/storage/downloads/gallery-dl_downloads`). Use your phone's file manager to access them.
 
 ## 6. Customizing the Script (For Other Browsers/Preferences)
@@ -300,7 +314,7 @@ The `termux-url-opener` script provided in this guide is specifically configured
 
 * For issues with `gallery-dl` itself, please refer to the [gallery-dl GitHub Issues page](https://github.com/mikf/gallery-dl/issues).
 * For issues with Termux, see the [Termux GitHub community](https://github.com/termux/termux-app/issues).
-* If you have improvements for this guide, feel free to suggest them!
+* If you have improvements for this guide, feel free to suggest them at! <a href="https://t.me/nobita1810"><img src="https://github.com/user-attachments/assets/34e2ecb9-17fb-4b9c-ac5f-8b8080f32537" alt="icon" width="30"/></a> <a href="https://t.me/nobita1810">https://t.me/nobita1810</a>
 
 ## 10. Image Integration Suggestions (For Guide Maintainers)
 
